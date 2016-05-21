@@ -1,0 +1,20 @@
+body {
+  background-color: black;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  height: 50%;
+  width: 50%;
+  margin: auto;
+}
+
+.step1a {
+  color: white;
+  position: relative;
+  font-size: 10px;
+  -webkit-transition: background-color 2s, font: 20s;
+  transition: all 10s ease-out;
+}
+
+.step1b {
+  font-size: 50px;
+}
