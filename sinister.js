@@ -1,37 +1,57 @@
-console.log('this is sinister');
-const el = document.getElementById('main');
+// 'use strict';
+const defaults = {
+  delay: 650
+};
+const body = document.getElementsByTagName('body')[0];
 
-function clearElement () {
-  el.className = '';
-  el.textContent = '';
+function setToCenterPoint ($el) {
+  const winHeight = window.innerHeight;
+  const winWidth = window.innerWidth;
+  const y = winHeight / 3;
+  const x = winWidth / 3;
+  const diameter = (winWidth < winHeight ? winWidth : winHeight);
+  const t = Math.random(0, 2 * 3.15159);
+  const r = diameter / 2;
+
+  const distance = Math.random(0, 1) * r;
+  const newX = (distance * Math.cos(t)) + x;
+  const newY = (distance * Math.sin(t)) + y;
+  $el.style.top = newY;
+  $el.style.left = newX;
 }
 
-function welcome () {
-  el.textContent = 'Welcome to Sinister';
-  el.classList.add('step1a');
-  el.classList.add('step1b');
-}
+function sayThing (phrase) {
+  const newDiv = document.createElement('div');
+  newDiv.textContent = phrase;
+  body.appendChild(newDiv);
+  setToCenterPoint(newDiv);
+  newDiv.classList.add('simplesay');
+  setTimeout(function () {
+    newDiv.classList.add('simplesay2');
+  }, 0);
 
-function middle () {
-  clearElement();
-  console.log('dont look behind you');
-}
-
-function end () {
-  console.log('damn that was scary');
+  setTimeout(body.removeChild.bind(body, newDiv), defaults.delay + 100);
 }
 
 const actions = [
-  { exec: welcome, delay: 100 },
-  { exec: middle, delay: 14000 },
-  { exec: end, delay: 500 }
+  { text: 'Hello' },
+  { text: 'and welcome!' },
+  { text: 'These should' },
+  { text: 'all be read in order' },
+  { text: 'it might not work' },
+  { text: 'and if it doesn\'t we need' },
+  { text: 'to adjust it' }
 ];
 
 function processActions (list) {
   var totalDelay = 0;
   list.forEach(function (item) {
-    totalDelay += item.delay;
-    window.setTimeout(item.exec, totalDelay);
+    const delay = item.delay || defaults.delay;
+    totalDelay += delay;
+    window.setTimeout(function () {
+      if (item.exec) item.exec();
+      if (item.text) sayThing(item.text);
+    }, totalDelay);
   });
 }
 
